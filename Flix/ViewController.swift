@@ -64,8 +64,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let baseUrl = "https://image.tmdb.org/t/p/w185"
         let posterPath = movie["poster_path"] as! String
-        let posterUrl = URL(string: baseUrl + posterPath)!
-        
+        let posterUrl = URL(string: baseUrl + posterPath)
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCellTableViewCell") as! MoiveCellTableViewCell
@@ -73,10 +72,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.titleLabel.text = title
         cell.synopsisLabel.text = synopsis
         
-        cell.posterView.af.setImage(withURL: posterUrl)
+        cell.posterView.af.setImage(withURL: posterUrl!)
         
         
         return cell
+    }
+    
+    
+    override func prepare(for segue:
+      UIStoryboardSegue, sender: Any?)
+    {
+        // Find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        // Pass selected movie to details view controller
+        
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 
